@@ -13,16 +13,28 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET song by ID
+// // GET song by ID
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const song = await Song.findById(req.params.id);
+//     if (!song) return res.status(404).json({ error: "Song not found" });
+//     res.json(song);
+//   } catch (err) {
+//     res.status(500).json({ error: "Failed to fetch song" });
+//   }
+// });
+
+// GET song by song_id
 router.get("/:id", async (req, res) => {
   try {
-    const song = await Song.findById(req.params.id);
+    const song = await Song.findOne({ song_id: req.params.id });
     if (!song) return res.status(404).json({ error: "Song not found" });
     res.json(song);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch song" });
   }
 });
+
 
 // POST new song
 router.post("/", async (req, res) => {

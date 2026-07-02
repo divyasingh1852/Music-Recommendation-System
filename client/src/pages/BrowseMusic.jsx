@@ -121,7 +121,7 @@ export default function BrowseMusic() {
                   e.target.src = MusicImage;   
                 }}
               />
-              {song._id ? (
+              {song.song_id ? (
                 <button
                   className="song-card-overlayBtn"
                   onClick={() => navigate(`/song/${song._id}`)}
