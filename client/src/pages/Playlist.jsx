@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import MusicImage from "../assets/MusicImage.jpg";  
+import server from "../environment.js";
+
 
 export default function Playlist() {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ export default function Playlist() {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/playlist");
+        const res = await axios.get(`${server}/api/playlist`);
         const items = res.data.songs || [];
 
         const withImages = items.map((item, idx) => ({
@@ -34,7 +36,7 @@ export default function Playlist() {
 
   const handleRemove = async (songId) => {
     try {
-      const res = await axios.post("http://localhost:8080/api/playlist/remove", {
+      const res = await axios.post(`${server}/api/playlist/remove`,  {
         songId,
       });
       // alert(res.data.message || "Song removed from playlist!");

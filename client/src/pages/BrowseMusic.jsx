@@ -3,6 +3,7 @@ import axios from "axios";
 import SearchResults from "../components/SearchResults";
 import { useNavigate } from "react-router-dom";
 import MusicImage from "../assets/MusicImage.jpg";   
+import server from "../environment.js";
 
 export default function BrowseMusic() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function BrowseMusic() {
   //  Fetch multiple images for a genre
   const fetchGenreImages = async (genre) => {
     try {
-      const resImg = await axios.get("http://localhost:8080/api/unsplash", {
+     const resImg = await axios.get(`${server}/api/unsplash`,{
         params: { query: `${genre} music` }
       });
       return resImg.data.urls || [];
@@ -44,10 +45,10 @@ export default function BrowseMusic() {
       let results = [];
 
       if (genre === "All") {
-        const res = await axios.get("http://localhost:8080/api/songs");
+        const res = await axios.get(`${server}/api/songs`);
         results = res.data || [];
       } else {
-        const res = await axios.post("http://localhost:8080/api/recommend", { query: genre });
+        const res = await axios.post(`${server}/api/recommend`, { query: genre });
         results = res.data?.results || [];
       }
 

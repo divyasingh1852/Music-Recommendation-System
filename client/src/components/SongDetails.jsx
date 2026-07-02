@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import server from "../environment.js"; 
 
 export default function SongDetails() {
   const { id } = useParams();
@@ -11,7 +12,7 @@ export default function SongDetails() {
   useEffect(() => {
     const fetchSong = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/songs/${id}`);
+        const res = await axios.get(`${server}/api/songs/${id}`);
         const data = res.data;
         setSong({
           ...data,
@@ -21,7 +22,7 @@ export default function SongDetails() {
             "This track brings a unique vibe blending melody and rhythm, perfect for music lovers."
         });
 
-        const playlistRes = await axios.get("http://localhost:8080/api/playlist");
+        const playlistRes = await axios.get(`${server}/api/playlist`);
         const songs = playlistRes.data.songs || [];
 
         const inList = songs.some((s) => s._id === data._id);
@@ -37,7 +38,7 @@ export default function SongDetails() {
 
   const handleAddToPlaylist = async () => {
     try {
-      const res = await axios.post("http://localhost:8080/api/playlist/add", {
+      const res = await axios.post(`${server}/api/playlist/add`, {
         songId: song._id,
       });
       // alert(res.data.message || "Song added to playlist successfully!");
