@@ -1,4 +1,4 @@
-import Vector from "../models/vector.js";
+import Vector from "../models/Vector.js";
 import SongMetadata from "../models/songMetadata.js";
 import { buildSongVector } from "../services/genAI.js";
 import { cosineSimilarity } from "../services/vectorService.js";
