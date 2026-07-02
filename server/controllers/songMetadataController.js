@@ -1,4 +1,4 @@
-import SongMetadata from "../models/SongMetadata.js";
+import SongMetadata from "../models/songMetadata.js";
 
 // Get all songs
 export const getAllMetadataSongs = async (req, res) => {
