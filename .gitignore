@@ -4,5 +4,5 @@ client/.env
 server/.env
 server/data/song.json
 server/data/spotify_data.json
-server/data/spotify_data.json
+server/data/track_data.json
 
