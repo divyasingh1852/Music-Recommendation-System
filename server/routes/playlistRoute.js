@@ -69,36 +69,32 @@ router.get("/", async (req, res) => {
 // });
 
 
-
 // Add song to playlist
 router.post("/add", async (req, res) => {
   try {
-    const { playlist_id, song_id } = req.body;
+    const { song_id } = req.body;
+    const userId = "demoUser";
 
-    // Find playlist
-    const playlist = await Playlist.findById(playlist_id);
-    if (!playlist) return res.status(404).json({ error: "Playlist not found" });
+    let playlist = await Playlist.findOne({ userId });
+    if (!playlist) playlist = new Playlist({ userId, songs: [] });
 
-    // Check if song exists by song_id
     const song = await Song.findOne({ song_id });
     if (!song) return res.status(404).json({ error: "Song not found" });
 
-    // Prevent duplicates
-    if (playlist.songs.includes(song.song_id)) {
+    if (playlist.songs.includes(song_id)) {
       return res.status(400).json({ error: "Song already in playlist" });
     }
 
-    // Add song_id string to playlist
-    playlist.songs.push(song.song_id);
+    playlist.songs.push(song_id);
     await playlist.save();
 
-    res.json({ success: true, playlist });
+    const songs = await Song.find({ song_id: { $in: playlist.songs } });
+    res.json({ success: true, songs });
   } catch (err) {
     console.error("Error adding to playlist:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 // Remove song from playlist
 // router.post("/remove", async (req, res) => {
@@ -119,25 +115,25 @@ router.post("/add", async (req, res) => {
 // });
 
 
-// Delete song from playlist
+
+// Remove song from playlist
 router.post("/remove", async (req, res) => {
   try {
-    const { playlist_id, song_id } = req.body;
+    const { song_id } = req.body;
+    const userId = "demoUser";
 
-    // Find playlist
-    const playlist = await Playlist.findById(playlist_id);
+    const playlist = await Playlist.findOne({ userId });
     if (!playlist) return res.status(404).json({ error: "Playlist not found" });
 
-    // Check if song exists in playlist
     if (!playlist.songs.includes(song_id)) {
       return res.status(400).json({ error: "Song not in playlist" });
     }
 
-    // Remove song_id from array
     playlist.songs = playlist.songs.filter(id => id !== song_id);
     await playlist.save();
 
-    res.json({ success: true, playlist });
+    const songs = await Song.find({ song_id: { $in: playlist.songs } });
+    res.json({ success: true, songs });
   } catch (err) {
     console.error("Error removing song from playlist:", err);
     res.status(500).json({ error: "Internal Server Error" });
