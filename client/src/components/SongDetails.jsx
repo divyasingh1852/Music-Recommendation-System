@@ -39,7 +39,7 @@ export default function SongDetails() {
   const handleAddToPlaylist = async () => {
     try {
       const res = await axios.post(`${server}/api/playlist/add`, {
-        songId: song.song_id,
+        song_id: song.song_id,
       });
       // alert(res.data.message || "Song added to playlist successfully!");
       setInPlaylist(true); //  update state

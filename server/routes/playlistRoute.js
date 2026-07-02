@@ -4,18 +4,40 @@ import Song from "../models/Song.js";
 
 const router = express.Router();
 
+// router.get("/", async (req, res) => {
+//   try {
+//     const userId = "demoUser"; // replace with real auth later
+//     let playlist = await Playlist.findOne({ userId }).populate("songs");
+
+//     if (!playlist) {
+//       playlist = new Playlist({ userId, songs: [] });
+//       await playlist.save();
+//     }
+
+//     res.json(playlist);
+//   } catch (err) {
+//     res.status(500).json({ error: "Failed to fetch playlist" });
+//   }
+// });
+
+
+// GET playlist with full song details
 router.get("/", async (req, res) => {
   try {
     const userId = "demoUser"; // replace with real auth later
-    let playlist = await Playlist.findOne({ userId }).populate("songs");
+    let playlist = await Playlist.findOne({ userId });
 
     if (!playlist) {
       playlist = new Playlist({ userId, songs: [] });
       await playlist.save();
     }
 
-    res.json(playlist);
+    // Fetch full song details for each song_id string
+    const songs = await Song.find({ song_id: { $in: playlist.songs } });
+
+    res.json({ songs });
   } catch (err) {
+    console.error("Error fetching playlist:", err);
     res.status(500).json({ error: "Failed to fetch playlist" });
   }
 });
