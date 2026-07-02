@@ -1,4 +1,4 @@
-import SongFeatures from "../models/SongFeatures.js";
+import SongFeatures from "../models/songFeatures.js";
 
 // Get all songs
 export const getAllFeatureSongs = async (req, res) => {
