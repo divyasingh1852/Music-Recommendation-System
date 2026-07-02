@@ -37,10 +37,10 @@ export default function Playlist() {
   const handleRemove = async (songId) => {
     try {
       const res = await axios.post(`${server}/api/playlist/remove`,  {
-        songId,
+        song_id: songId
       });
       // alert(res.data.message || "Song removed from playlist!");
-      setPlaylistItems((prev) => prev.filter((item) => item._id !== songId));
+      setPlaylistItems((prev) => prev.filter((item) => item.song_id !== songId));
     } catch (err) {
       console.error("Error removing song:", err);
       //alert("Failed to remove song.");
@@ -59,7 +59,7 @@ export default function Playlist() {
       ) : (
         <div className="watchlist-grid">
           {playlistItems.map((item) => (
-            <div key={item._id} className="watchlist-card">
+            <div key={item.song_id} className="watchlist-card">
               <img src={item.image} alt={item.track_name || item.title} 
                   onError={(e) => {
                     console.log("Image failed:", item.image);
@@ -75,13 +75,13 @@ export default function Playlist() {
               <div className="hover-actions">
                 <button
                   className="playlist-viewBtn"
-                  onClick={() => navigate(`/song/${item._id}`)}
+                  onClick={() => navigate(`/song/${item.song_id}`)}
                 >
                   View Details
                 </button>
                 <button
                   className="playlist-trashBtn"
-                  onClick={() => handleRemove(item._id)}
+                  onClick={() => handleRemove(item.song_id)}
                 >
                   <FiTrash2 />
                 </button>
