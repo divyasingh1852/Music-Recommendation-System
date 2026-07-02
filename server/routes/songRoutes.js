@@ -48,13 +48,25 @@ router.post("/", async (req, res) => {
 });
 
 // DELETE song
+// router.delete("/:id", async (req, res) => {
+//   try {
+//     await Song.findByIdAndDelete(req.params.id);
+//     res.json({ message: "Song deleted" });
+//   } catch (err) {
+//     res.status(500).json({ error: "Failed to delete song" });
+//   }
+// });
+
+// DELETE song by song_id
 router.delete("/:id", async (req, res) => {
   try {
-    await Song.findByIdAndDelete(req.params.id);
+    const deletedSong = await Song.findOneAndDelete({ song_id: req.params.id });
+    if (!deletedSong) return res.status(404).json({ error: "Song not found" });
     res.json({ message: "Song deleted" });
   } catch (err) {
     res.status(500).json({ error: "Failed to delete song" });
   }
 });
+
 
 export default router;

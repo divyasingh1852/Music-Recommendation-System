@@ -124,7 +124,7 @@ export default function BrowseMusic() {
               {song.song_id ? (
                 <button
                   className="song-card-overlayBtn"
-                  onClick={() => navigate(`/song/${song._id}`)}
+                  onClick={() => navigate(`/song/${song.song_id}`)}
                 >
                   View Details
                 </button>
